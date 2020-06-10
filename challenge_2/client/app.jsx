@@ -34,9 +34,6 @@ class App extends Component {
     return (
       <div>
         <div>
-          hello world
-        </div>
-        <div>
           <Chart time={time} cost={cost} />
         </div>
       </div>

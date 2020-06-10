@@ -29,7 +29,7 @@ const Chart = ( { time, cost} ) => {
 
   return (
     <div>
-      <Line data={data} />
+      <Line data={data} width={100} height={500} options={{ maintainAspectRatio: false }} />
     </div>
 )}
 
