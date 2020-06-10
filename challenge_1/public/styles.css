@@ -1,0 +1,68 @@
+h1, h2 {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+
+body {
+  display: flex;
+  align-self: center;
+  margin: 0;
+  justify-content: center;
+  background-color: rgb(190, 151, 198);
+  font-family: "Courier New", Courier, monospace;
+}
+
+#app {
+  align-content: center;
+  width: 55%;
+  height: 100%;
+  background-color: white;
+  padding: 25px;
+  box-shadow: 0 0 75px black;
+}
+
+form {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+
+button {
+  background-color: rgb(129, 63, 156);
+  box-shadow: 0 0 3px gray;
+  border: none;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.text-data {
+  padding: 10px;
+  margin: 15px 0;
+  box-shadow: 0 0 5px gray;
+}
+
+ul {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+
+li {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 10px;
+  color: gray;
+  background-color: whitesmoke;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0 0 6px gray;
+}

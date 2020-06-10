@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ReactPaginate from 'react-paginate';
+import Data from './data';
 
 class App extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class App extends Component {
 
     this.state = {
       search: '',
-      allData: null,
+      fetchedData: null,
       offset: 0,
       limit: 10,
       currentPage: 0,
@@ -28,20 +29,24 @@ class App extends Component {
 
   handleSearch(e) {
     e.preventDefault();
-    const { search, limit } = this.state;
-    fetch(`/events?q=${search}`)
-    .then(res => res.json())
+    const { search, limit,currentPage } = this.state;
+    let totalCount;
+    fetch(`/events?q=${search}&_page=${currentPage + 1}&_limit=${limit}`)
+    .then((res) => {
+      totalCount = res.headers.get('X-Total-Count')
+      return res.json()
+    })
     .then(data => this.setState({
-      allData: data,
-      totalPages: Math.ceil(data.length / limit)
+      fetchedData: data,
+      totalPages: Math.ceil(totalCount / limit)
     }))
     .then(() => this.loadPage())
     .catch((err) => console.log('There was an error: ', err))
   };
 
   loadPage() {
-    const { allData, offset, limit } = this.state;
-    let current = allData.slice(offset, offset + limit).map((event, i) =>
+    const { fetchedData, offset, limit } = this.state;
+    let current = fetchedData.map((event, i) =>
   (<div key={i}>
       <div>date: {event.date}</div>
       <div>description: {event.description}</div>
@@ -51,20 +56,21 @@ class App extends Component {
       <div>granularity: {event.granularity}</div>
       <br/>
     </div>));
-    this.setState({
-      currentData: current
-    });
+    this.setState((prevState) => ({
+      currentPage: prevState.currentPage + 1,
+      currentData: current,
+    }));
   };
 
   handlePageChange(e) {
-    const { limit} = this.state;
+    const { limit } = this.state;
     let selected = e.selected;
     let newOffset = Math.ceil(selected * limit);
-
     this.setState ({
       offset: newOffset,
+      currentPage: selected,
     });
-    this.loadPage();
+    this.handleSearch();
   }
 
   render() {
@@ -72,24 +78,31 @@ class App extends Component {
     return (
       <div>
         <div>
-          <input type="text" id="search" onChange={this.handleChange} placeholder="search..."/>
-          <button type="button" onClick={this.handleSearch}>Search</button>
+          <h1>Historical Events Finder</h1>
         </div>
 
-        {currentData.length !== 0 && (
-          <div>{currentData}</div>
-        )}
+          <form onSubmit={this.handleSearch}>
+            <input type="text" id="search" onChange={this.handleChange} placeholder="search..."/>
+            <button type="submit">Search</button>
+          </form>
 
-        <ReactPaginate
-          previousLabel={'<'}
-          nextLabel={'>'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          pageCount={totalPages}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={this.handlePageChange}
+        <Data data={currentData} />
+
+        {currentData.length !== 0 && (
+          <ReactPaginate
+            previousLabel={'<'}
+            nextLabel={'>'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageChange}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
           />
+          )}
 
       </div>
     )
