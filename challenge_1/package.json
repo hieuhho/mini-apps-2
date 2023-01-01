@@ -13,17 +13,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-paginate": "^6.3.2",
-    "webpack": "^4.43.0"
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
     "json-server": "^0.16.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^5.0.1"
   }
 }
